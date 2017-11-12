@@ -32,8 +32,6 @@ def open_file(filename):
 home = expanduser("~")
 null = open(os.devnull, 'w')
 
-# Read file
-# input = sys.argv[1]
 input = args.file
 if os.path.exists(input):
 
@@ -49,7 +47,6 @@ if os.path.exists(input):
     input_text = open(input).read()
     input_text = unicode(input_text, "utf-8")
 
-    # md = markdown.Markdown(extensions=['markdown.extensions.tables', 'markdown.extensions.meta', 'markdown.extensions.smarty', 'markdown.extensions.toc', 'pymdownx.emoji'], extension_configs={})
     md = markdown.Markdown(extensions=['markdown.extensions.tables', 'markdown.extensions.meta', 'markdown.extensions.smarty', 'markdown.extensions.toc'], extension_configs={})
 
     html = md.convert(input_text)
@@ -110,9 +107,9 @@ if os.path.exists(input):
     if args.show:
         open_file(pdf_filename)
 
-    # if not args.keep:
-    #     print("Removing temporary HTML file")
-    #     os.remove(html_filename)
+    if not args.keep:
+        print("Removing temporary HTML file")
+        os.remove(html_filename)
 
     sys.exit()
 else:
