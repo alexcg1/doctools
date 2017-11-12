@@ -5,12 +5,9 @@ import os
 import argparse
 import subprocess
 import markdown
-# import pdfkit
-# import pymdownx.emoji
 import codecs
-from weasyprint import HTML, CSS
+# from weasyprint import HTML, CSS
 from os.path import expanduser
-# import json
 
 parser = argparse.ArgumentParser(description="Converts Markdown to pretty PDF documents")
 parser.add_argument("file", help="The file you want to convert")
@@ -28,11 +25,8 @@ def open_file(filename):
         opener ="open" if sys.platform == "darwin" else "xdg-open"
         subprocess.call([opener, filename])
 
-home = expanduser("~")
-null = open(os.devnull, 'w')
 
-# Read file
-# input = sys.argv[1]
+
 input = args.file
 if os.path.exists(input):
 
@@ -48,22 +42,23 @@ if os.path.exists(input):
     input_text = open(input).read()
     input_text = unicode(input_text, "utf-8")
 
-    # md = markdown.Markdown(extensions=['markdown.extensions.tables', 'markdown.extensions.meta', 'markdown.extensions.smarty', 'markdown.extensions.toc', 'pymdownx.emoji'], extension_configs={})
     md = markdown.Markdown(extensions=['markdown.extensions.tables', 'markdown.extensions.meta', 'markdown.extensions.smarty', 'markdown.extensions.toc'], extension_configs={})
 
     html = md.convert(input_text)
 
+
     input_dir = os.path.dirname(os.path.abspath(input))
+    home = expanduser("~")
+    null = open(os.devnull, 'w')
     template_dir = os.path.join(home, "code", "doctools", "template")
     css_dir = os.path.join(template_dir,"css")
-    css_file = os.path.join(css_dir, "tufte-print-full-width.css")
+    # Define template location and CSS styling
 
+    css_file = os.path.join(css_dir, "tufte-print-full-width.css")
     css_file_abs_path = os.path.realpath(css_file)  
     print("CSS file at "+css_file)
     
     html_header = u'<html>\n<head>\n<meta charset="utf-8"/>\n<title></title>\n<link rel="stylesheet" href="'+css_file+'">\n</head>\n  <body>'
-    # html_header = u'<html>\n<head>\n<meta charset="utf-8"/>\n<title></title>\n</head>\n  <body>'
-
     html_footer = u'</body>\n</html>'
 
     # Markdown to HTML
@@ -105,7 +100,7 @@ if os.path.exists(input):
 
     print ("Writing "+html_filename+" to "+pdf_filename)
 
-    subprocess.Popen(["weasyprint", html_filename, pdf_filename])
+    subprocess.Popen(["weasyprint", html_filename, pdf_filename], stderr = null)
 
     html_file.close()
 
@@ -114,9 +109,9 @@ if os.path.exists(input):
     if args.show:
         open_file(pdf_filename)
 
-    # if not args.keep:
-    #     print("Removing temporary HTML file")
-    #     os.remove(html_filename)
+    if not args.keep:
+        print("Removing temporary HTML file")
+        os.remove(html_filename)
 
     sys.exit()
 else:
