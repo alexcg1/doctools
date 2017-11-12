@@ -1,0 +1,10 @@
+{
+	"controls": true,
+	"progress": false,
+	dependencies: [
+		// ... 
+		{ src: 'plugin/chart/Chart.min.js' },				
+		{ src: 'plugin/chart/csv2chart.js' },
+		// ... 
+	]
+}
