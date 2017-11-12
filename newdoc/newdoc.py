@@ -15,7 +15,7 @@ def open_file(filename):
         subprocess.call([opener, filename])
 
 home = expanduser("~")
-template_dir = os.path.join(home, "code", "doctools", template)
+template_dir = os.path.join(home, "code", "doctools", "template")
 
 # Parse arguments
 parser = argparse.ArgumentParser(description="Creates a new document folder based on template folder")
